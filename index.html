@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Facebook Daily-Life Creator Scanner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: #020617;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #cbd5f5;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #020617;
+      color: #e5e7eb;
+      margin-bottom: 12px;
+      outline: 1px solid #1e293b;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      background: #2563eb;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #1e293b;
+      text-align: left;
+    }
+    th {
+      color: #93c5fd;
+    }
+    .hint {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>  <h1>📊 Facebook Daily-Life Creator Scanner</h1>
+  <p>Manual content intelligence tool for analyzing Filipino daily-life creators (meaning > moment).</p>  <div class="card">
+    <label>Creator Name / Page</label>
+    <input type="text" id="creator" placeholder="e.g. Juan Dela Cruz" /><label>Follower Count</label>
+<input type="number" id="followers" placeholder="e.g. 50000" />
+
+<label>Average Reel Views</label>
+<input type="number" id="views" placeholder="e.g. 300000" />
+
+<label>Hook / Opening Words</label>
+<input type="text" id="hook" placeholder="e.g. Minsan hindi mo namamalayan…" />
+
+<label>Emotional Mirror Line</label>
+<input type="text" id="emotion" placeholder="e.g. Pagod ka na pero di ka pwedeng huminto" />
+
+<label>Meaning / Insight Line</label>
+<textarea id="meaning" placeholder="What does this moment reveal?"></textarea>
+
+<label>Closing / Resolution Line</label>
+<input type="text" id="closing" placeholder="e.g. At okay lang 'yon" />
+
+<button onclick="addRow()">➕ Add to Scanner</button>
+<div class="hint">Tip: Focus on view-to-follower ratio and repeated wording patterns.</div>
+
+  </div>  <table id="scannerTable">
+    <thead>
+      <tr>
+        <th>Creator</th>
+        <th>Followers</th>
+        <th>Avg Views</th>
+        <th>Hook</th>
+        <th>Emotion</th>
+        <th>Meaning</th>
+        <th>Closing</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>  <script>
+    function addRow() {
+      const table = document.querySelector('#scannerTable tbody');
+      const row = document.createElement('tr');
+
+      const data = [
+        creator.value,
+        followers.value,
+        views.value,
+        hook.value,
+        emotion.value,
+        meaning.value,
+        closing.value
+      ];
+
+      data.forEach(text => {
+        const td = document.createElement('td');
+        td.textContent = text;
+        row.appendChild(td);
+      });
+
+      table.appendChild(row);
+
+      // Clear inputs
+      document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+    }
+  </script></body>
+</html>
