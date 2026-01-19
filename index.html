@@ -69,6 +69,11 @@
     }
     th {
       color: #93c5fd;
+      cursor: pointer;
+    }
+    .highlight {
+      background-color: #1e40af;
+      color: #fff;
     }
     .hint {
       font-size: 12px;
@@ -78,7 +83,7 @@
   </style>
 </head>
 <body>  <h1>📊 Facebook Daily-Life Creator Scanner</h1>
-  <p>Manual content intelligence tool for analyzing Filipino daily-life creators (meaning > moment).</p>  <div class="card">
+  <p>Manual content intelligence tool with insights: view-to-follower ratio, top hooks/emotional phrases, and performance sorting.</p>  <div class="card">
     <label>Creator Name / Page</label>
     <input type="text" id="creator" placeholder="e.g. Juan Dela Cruz" /><label>Follower Count</label>
 <input type="number" id="followers" placeholder="e.g. 50000" />
@@ -104,9 +109,10 @@
   </div>  <table id="scannerTable">
     <thead>
       <tr>
-        <th>Creator</th>
-        <th>Followers</th>
-        <th>Avg Views</th>
+        <th onclick="sortTable(0)">Creator</th>
+        <th onclick="sortTable(1)">Followers</th>
+        <th onclick="sortTable(2)">Avg Views</th>
+        <th>Ratio</th>
         <th>Hook</th>
         <th>Emotion</th>
         <th>Meaning</th>
@@ -119,19 +125,23 @@
       const table = document.querySelector('#scannerTable tbody');
       const row = document.createElement('tr');
 
-      const data = [
-        creator.value,
-        followers.value,
-        views.value,
-        hook.value,
-        emotion.value,
-        meaning.value,
-        closing.value
-      ];
+      const creatorVal = document.getElementById('creator').value;
+      const followersVal = parseInt(document.getElementById('followers').value) || 0;
+      const viewsVal = parseInt(document.getElementById('views').value) || 0;
+      const ratio = followersVal > 0 ? (viewsVal / followersVal).toFixed(2) : '0';
 
-      data.forEach(text => {
+      const hookVal = document.getElementById('hook').value;
+      const emotionVal = document.getElementById('emotion').value;
+      const meaningVal = document.getElementById('meaning').value;
+      const closingVal = document.getElementById('closing').value;
+
+      const data = [creatorVal, followersVal, viewsVal, ratio, hookVal, emotionVal, meaningVal, closingVal];
+
+      data.forEach((text, index) => {
         const td = document.createElement('td');
         td.textContent = text;
+        // Highlight top hooks/emotional phrases (simple logic: length > 25 chars)
+        if ((index === 4 || index === 5) && text.length > 25) td.classList.add('highlight');
         row.appendChild(td);
       });
 
@@ -139,6 +149,25 @@
 
       // Clear inputs
       document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+
+      // Optional: limit hits to avoid UI overload (safe for hit rate)
+      if (table.rows.length > 50) {
+        table.deleteRow(0);
+      }
+    }
+
+    function sortTable(colIndex) {
+      const table = document.getElementById('scannerTable');
+      const tbody = table.tBodies[0];
+      const rows = Array.from(tbody.rows);
+
+      rows.sort((a, b) => {
+        const valA = a.cells[colIndex].textContent.trim();
+        const valB = b.cells[colIndex].textContent.trim();
+        return !isNaN(valA) && !isNaN(valB) ? valB - valA : valA.localeCompare(valB);
+      });
+
+      rows.forEach(row => tbody.appendChild(row));
     }
   </script></body>
 </html>
